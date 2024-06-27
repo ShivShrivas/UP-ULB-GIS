@@ -21,6 +21,8 @@ public interface ApiInterface {
 
     @POST("gis/MasterData")
     Call<AllSpinnerDataModel> getSpinnerMasterData(@Body JsonObject jsonObject);
+    @POST("gis/MasterDataById")
+    Call<AllSpinnerDataModel> getSpinnerMasterDataById(@Body JsonObject jsonObject);
 
     @Multipart
     @POST("gis/insertdata")
@@ -74,7 +76,12 @@ public interface ApiInterface {
             @Part("Longitute") RequestBody longitude,
             @Part("DeviceId") RequestBody deviceId,
             @Part("ProcId") RequestBody procId,
-            @Part("GovtSchemeId") RequestBody govtSchemeId
+            @Part("GovtSchemeId") RequestBody govtSchemeId,
+            @Part("ExemptionCategoryId") RequestBody ExemptionCategoryId,
+            @Part("PropertyUseId") RequestBody PropertyUseId,
+            @Part("SubCastId") RequestBody SubCastId,
+            @Part("PropertySubType") RequestBody PropertySubType,
+            @Part("DOB") RequestBody DOB
     );
 
 

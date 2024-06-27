@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.gson.JsonObject;
+import com.uphq.ulb_gis.Utils.DateTextWatcher;
 import com.uphq.ulb_gis.Utils.GpsTracker;
 import com.uphq.ulb_gis.Utils.ImageDialogFragment;
 import com.uphq.ulb_gis.Utils.ImageUtils;
@@ -48,6 +50,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -63,9 +67,11 @@ public class MasterFormActivity extends AppCompatActivity {
     private EditText et_OwnerName;
     private EditText et_ownerFather;
     private Spinner spin_Gender;
-    private TextView tv_dob;
+    private EditText et_dob;
+    private EditText et_AssesmentDate;
     private EditText et_mob;
     private EditText et_propertyNumber;
+    private EditText et_oldPropertyNumber;
     private Spinner spin_business;
     private Spinner spin_widthOfRoad;
     private EditText et_numberOfamMem;
@@ -98,6 +104,7 @@ public class MasterFormActivity extends AppCompatActivity {
 
     private EditText etTypeOfRoad;
     private Spinner spin_categoryOfPrperty;
+    private Spinner spin_SubCategoryOfPrperty;
     private Spinner spin_builtyear;
     private EditText etAreaOfProperty;
     private EditText etAreaOfPlot;
@@ -106,7 +113,10 @@ public class MasterFormActivity extends AppCompatActivity {
     private EditText etLivingArea;
     private EditText etBusinessArea;
     private EditText et_galiNumber;
+    private EditText et_HouseNumber;
     private EditText etRentArea;
+    private EditText et_NewOwnerName;
+    private EditText et_NewOwnerFatherName;
 
     LinearLayout llBeforeWorkImage;
     ImageView iv_capturedImage;
@@ -131,21 +141,27 @@ public class MasterFormActivity extends AppCompatActivity {
         oficeId=getIntent().getStringExtra("OfficeId");
         userid=getIntent().getStringExtra("UserId");
         calendar = Calendar.getInstance();
+        et_NewOwnerName = findViewById(R.id.et_NewOwnerName);
+        et_NewOwnerFatherName = findViewById(R.id.et_NewOwnerFatherName);
         llBeforeWorkImage = findViewById(R.id.llBeforeWorkImage);
         iv_capturedImage = findViewById(R.id.iv_capturedImage);
         et_ownerFather = findViewById(R.id.et_ownerFather);
         et_OwnerName = findViewById(R.id.et_OwnerName);
         spin_Gender = findViewById(R.id.spin_Gender);
-        tv_dob = findViewById(R.id.tv_dob);
+        et_dob = findViewById(R.id.et_dob);
+        et_AssesmentDate = findViewById(R.id.ev_AssesmentDate);
         et_mob = findViewById(R.id.et_mob);
         et_galiNumber = findViewById(R.id.et_galiNumber);
+        et_HouseNumber = findViewById(R.id.et_HouseNumber);
         et_propertyNumber = findViewById(R.id.et_propertyNumber);
+        et_oldPropertyNumber = findViewById(R.id.et_oldPropertyNumber);
         spin_business = findViewById(R.id.spin_business);
         et_numberOfamMem = findViewById(R.id.et_numberOfamMem);
         spin_typeOfRoad = findViewById(R.id.spin_typeOfRoad);
         spin_widthOfRoad = findViewById(R.id.spin_widthOfRoad);
         spin_typeOfRoad = findViewById(R.id.spin_typeOfRoad);
         spin_categoryOfPrperty = findViewById(R.id.spin_categoryOfPrperty);
+        spin_SubCategoryOfPrperty = findViewById(R.id.spin_SubCategoryOfPrperty);
         spin_builtyear = findViewById(R.id.spin_builtyear);
         etAreaOfProperty = findViewById(R.id.et_areOfProperty);
         etAreaOfPlot = findViewById(R.id.et_areaOfPlot);
@@ -198,7 +214,7 @@ public class MasterFormActivity extends AppCompatActivity {
         getSpinnerData(25,spin_isToilet,"Toilet numbers");
         getSpinnerData(25,spin_rationcard,"Ration card");
         getSpinnerData(3,spin_casteCategory,"Caste category");
-        getSpinnerData(27,spin_subCaste,"Sub-Caste category");
+        //getSpinnerData(27,spin_subCaste,"Sub-Caste category");
         getSpinnerData(16,spin_wardNo,"WardNumbers");
         getSpinnerData(13,spin_religion,"Religions");
         getSpinnerData(28,spin_gridNumber,"Grid Numbers");
@@ -209,12 +225,23 @@ public class MasterFormActivity extends AppCompatActivity {
         etLongitude.setEnabled(false);
         customProgress.hideProgress();
 
-        tv_dob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
+
+        et_dob.addTextChangedListener(new DateTextWatcher(et_dob));
+       et_AssesmentDate.addTextChangedListener(new DateTextWatcher(et_AssesmentDate));
+
+//        et_dob.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showDatePickerDialog(1);
+//            }
+//        });
+
+//        tv_AssesmentDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showDatePickerDialog(2);
+//            }
+//        });
         llBeforeWorkImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,20 +255,51 @@ public class MasterFormActivity extends AppCompatActivity {
                 dialogFragment.show(getSupportFragmentManager(), "ImageDialogFragment");
             }
         });
+        spin_casteCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SpinnerData spinnerData=(SpinnerData) parent.getSelectedItem();
+                Log.d("TAG",spinnerData.getMasterId().toString());
+                getSpinnerDataById(12,spin_subCaste,"Sub Caste",spinnerData.getMasterId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spin_categoryOfPrperty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SpinnerData spinnerData=(SpinnerData) parent.getSelectedItem();
+                Log.d("TAG",spinnerData.getMasterId().toString());
+                getSpinnerDataById(11,spin_SubCategoryOfPrperty,"Sub Property",spinnerData.getMasterId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validateEditText(et_OwnerName) &&
                         validateSpinner(spin_Gender) &&
-                        validateTextView(tv_dob) &&
+                        validateEditTextDate(et_dob) &&
                         validateEditText(et_ownerFather) &&
+                        validateEditText(et_NewOwnerName) &&
+                        validateEditText(et_NewOwnerFatherName) &&
                         validateEditText(et_mob) &&
                         validateEditText(et_propertyNumber) &&
+                        validateEditText(et_oldPropertyNumber) &&
                         validateSpinner(spin_business) &&
                         validateEditText(et_numberOfamMem) &&
                         validateSpinner(spin_typeOfRoad) &&
                         validateSpinner(spin_widthOfRoad) &&
                         validateSpinner(spin_categoryOfPrperty) &&
+                        validateSpinner(spin_SubCategoryOfPrperty) &&
                         validateSpinner(spin_builtyear) &&
                         validateEditText(etAreaOfProperty) &&
                         validateEditText(etAreaOfPlot) &&
@@ -270,11 +328,13 @@ public class MasterFormActivity extends AppCompatActivity {
                         validateEditText(et_nameOfWard)&&
                         validateSpinner(spin_wardNo) &&
                         validateSpinner(spin_gridNumber) &&
+                        validateEditText(et_HouseNumber) &&
                         validateEditText(et_galiNumber) &&
                         validateEditText(etMuhallaName)&&
 
 
-                        validateSpinner(spin_religion)
+                        validateSpinner(spin_religion) &&
+                        validateEditTextDate(et_AssesmentDate)
 
 
 
@@ -341,6 +401,18 @@ public class MasterFormActivity extends AppCompatActivity {
 
     }
 
+    private boolean validateEditTextDate(EditText editText) {
+        String text = editText.getText().toString().trim();
+        if (text.length() != 10) {
+            editText.setError("इसे भरना आवश्यक है");
+            focusOnView(editText);
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
     private boolean validateTextView(TextView editText) {
         String text = editText.getText().toString().trim();
         if (text.isEmpty()) {
@@ -394,12 +466,12 @@ public class MasterFormActivity extends AppCompatActivity {
 
         return image;
     }
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(int type) {
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
+            updateLabel(type);
         };
 
         new DatePickerDialog(MasterFormActivity.this, dateSetListener,
@@ -407,10 +479,17 @@ public class MasterFormActivity extends AppCompatActivity {
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    private void updateLabel() {
+    private void updateLabel(int type) {
         String dateFormat = "dd-MM-yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
-        tv_dob.setText(sdf.format(calendar.getTime()));
+        if (type==1){
+
+            et_dob.setText(sdf.format(calendar.getTime()));
+            et_dob.setError(null);
+        }else{
+            et_AssesmentDate.setText(sdf.format(calendar.getTime()));
+            et_AssesmentDate.setError(null);
+        }
     }
     private void getSpinnerData(int procId,Spinner spinner,String name) {
 
@@ -429,7 +508,14 @@ public class MasterFormActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()){
                     AllSpinnerDataModel allSpinnerDataModel=response.body();
-                    spinner.setAdapter(new MasterSpinnerAdapter(MasterFormActivity.this,allSpinnerDataModel.getData()));
+                    ArrayList<SpinnerData> arrayList=allSpinnerDataModel.getData();
+                    Collections.sort(arrayList, new Comparator<SpinnerData>() {
+                        @Override
+                        public int compare(SpinnerData m1, SpinnerData m2) {
+                            return Integer.compare(m1.getMasterId(), m2.getMasterId());
+                        }
+                    });
+                    spinner.setAdapter(new MasterSpinnerAdapter(MasterFormActivity.this,arrayList));
 
 
                 }else{
@@ -445,6 +531,49 @@ public class MasterFormActivity extends AppCompatActivity {
             }
         });
     }
+
+  private void getSpinnerDataById(int procId,Spinner spinner,String name,int id) {
+
+        JsonObject jsonObject=new JsonObject();
+        jsonObject.addProperty("ApiUserName", "GISUSER");
+        jsonObject.addProperty("Token", "12345");
+        jsonObject.addProperty("Procid", procId);
+        jsonObject.addProperty("Id", id);
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
+        Call<AllSpinnerDataModel> call = apiService.getSpinnerMasterDataById(jsonObject);
+        call.enqueue(new Callback<AllSpinnerDataModel>() {
+            @Override
+            public void onResponse(Call<AllSpinnerDataModel> call, Response<AllSpinnerDataModel> response) {
+
+                if (response.isSuccessful()){
+                    AllSpinnerDataModel allSpinnerDataModel=response.body();
+                    ArrayList<SpinnerData> arrayList=allSpinnerDataModel.getData();
+                    Collections.sort(arrayList, new Comparator<SpinnerData>() {
+                        @Override
+                        public int compare(SpinnerData m1, SpinnerData m2) {
+                            return Integer.compare(m1.getMasterId(), m2.getMasterId());
+                        }
+                    });
+                    spinner.setAdapter(new MasterSpinnerAdapter(MasterFormActivity.this,arrayList));
+
+
+                }else{
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllSpinnerDataModel> call, Throwable t) {
+
+
+            }
+        });
+    }
+
 
 
 
@@ -535,8 +664,8 @@ public class MasterFormActivity extends AppCompatActivity {
       Log.d("RequestBody", "HindiFatherName: " + et_ownerFather.getText().toString());
       Log.d("RequestBody", "OwnerName: " + et_OwnerName.getText().toString());
       Log.d("RequestBody", "HindiOwnerName: " + et_OwnerName.getText().toString());
-      Log.d("RequestBody", "NewOwnerName: " + et_OwnerName.getText().toString());
-      Log.d("RequestBody", "NewOwnerFatherName: " + et_ownerFather.getText().toString());
+      Log.d("RequestBody", "NewOwnerName: " + et_NewOwnerName.getText().toString());
+      Log.d("RequestBody", "NewOwnerFatherName: " + et_NewOwnerFatherName.getText().toString());
       Log.d("RequestBody", "HouseNo: " + et_propertyNumber.getText().toString());
       Log.d("RequestBody", "Address: ");
       Log.d("RequestBody", "MobileNo: " + et_mob.getText().toString());
@@ -576,9 +705,9 @@ public class MasterFormActivity extends AppCompatActivity {
       // Add other parameters
       RequestBody propertyId = RequestBody.create(MultipartBody.FORM, "0");
       RequestBody officeIdPart = RequestBody.create(MultipartBody.FORM, oficeId);
-      RequestBody propertyNo = RequestBody.create(MultipartBody.FORM, "");
-      RequestBody oldPropertyNo = RequestBody.create(MultipartBody.FORM, "");
-      RequestBody assessmentDate = RequestBody.create(MultipartBody.FORM, "");
+      RequestBody propertyNo = RequestBody.create(MultipartBody.FORM, et_propertyNumber.getText().toString());
+      RequestBody oldPropertyNo = RequestBody.create(MultipartBody.FORM, et_oldPropertyNumber.getText().toString());
+      RequestBody assessmentDate = RequestBody.create(MultipartBody.FORM, et_AssesmentDate.getText().toString());
       RequestBody wardId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_wardNo.getSelectedItem()).getMasterId().toString());
       RequestBody muhallaId = RequestBody.create(MultipartBody.FORM, etMuhallaName.getText().toString());
       RequestBody ownershipId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_ownership.getSelectedItem()).getMasterId().toString());
@@ -588,7 +717,7 @@ public class MasterFormActivity extends AppCompatActivity {
       RequestBody hindiOwnerName = RequestBody.create(MultipartBody.FORM, et_OwnerName.getText().toString());
       RequestBody newOwnerName = RequestBody.create(MultipartBody.FORM, et_OwnerName.getText().toString());
       RequestBody newOwnerFatherName = RequestBody.create(MultipartBody.FORM, et_ownerFather.getText().toString());
-      RequestBody houseNo = RequestBody.create(MultipartBody.FORM, et_propertyNumber.getText().toString());
+      RequestBody houseNo = RequestBody.create(MultipartBody.FORM, et_HouseNumber.getText().toString());
       RequestBody address = RequestBody.create(MultipartBody.FORM, "");
       RequestBody mobileNo = RequestBody.create(MultipartBody.FORM, et_mob.getText().toString());
       RequestBody rentAreaSqr = RequestBody.create(MultipartBody.FORM, etRentArea.getText().toString());
@@ -606,6 +735,7 @@ public class MasterFormActivity extends AppCompatActivity {
       RequestBody isWConnection = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_itWaterConnection.getSelectedItem()).getMasterId().toString());
       RequestBody gridNo = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_gridNumber.getSelectedItem()).getMasterId().toString());
       RequestBody galiNo = RequestBody.create(MultipartBody.FORM, et_galiNumber.getText().toString());
+      RequestBody DOB = RequestBody.create(MultipartBody.FORM, et_dob.getText().toString());
       RequestBody isTaxPay = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_isTaxPaying.getSelectedItem()).getMasterId().toString());
       RequestBody rashanCardTypeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_rationcard.getSelectedItem()).getMasterId().toString());
       RequestBody noofMember = RequestBody.create(MultipartBody.FORM, et_numberOfamMem.getText().toString());
@@ -614,7 +744,8 @@ public class MasterFormActivity extends AppCompatActivity {
       RequestBody registrationTypeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_registratioType.getSelectedItem()).getMasterId().toString());
       RequestBody roadTypeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_typeOfRoad.getSelectedItem()).getMasterId().toString());
       RequestBody uid = RequestBody.create(MultipartBody.FORM, userid);
-      RequestBody assessedTax = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
+      RequestBody assessedTax = RequestBody.create(MultipartBody.FORM, "");
+      RequestBody exemptionCategoryId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
       RequestBody modifiedTax = RequestBody.create(MultipartBody.FORM, "");
       RequestBody toilet = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_isToilet.getSelectedItem()).getMasterId().toString());
       RequestBody ruid = RequestBody.create(MultipartBody.FORM, "");
@@ -623,6 +754,9 @@ public class MasterFormActivity extends AppCompatActivity {
       RequestBody deviceId = RequestBody.create(MultipartBody.FORM, "");
       RequestBody procId = RequestBody.create(MultipartBody.FORM, "1");
       RequestBody govtSchemeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
+      RequestBody propertyUseId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
+      RequestBody SubCastId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
+      RequestBody PropertySubType = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
 
       ApiInterface apiService =
               ApiClient.getClient().create(ApiInterface.class);
@@ -636,7 +770,7 @@ public class MasterFormActivity extends AppCompatActivity {
               roadWidthId, constructionYear, totalOwnArea, typeId, floor, noofRoom, noofShop,
               roadFit, remark, isWConnection, gridNo, galiNo, isTaxPay, rashanCardTypeId, noofMember,
               religionId, casteId, registrationTypeId, roadTypeId, uid, assessedTax, modifiedTax,
-              toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId
+              toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB
       );
 
       call.enqueue(new Callback<JsonObject>() {

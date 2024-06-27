@@ -111,14 +111,17 @@
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/tv_dob"
+                            <EditText
+                                android:id="@+id/et_dob"
                                 android:drawableEnd="@drawable/calendar"
                                 android:paddingEnd="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
+                                android:maxLength="10"
                                  android:paddingStart="4dp"
                                 android:textSize="15dp"
+                                android:inputType="datetime"
+                                android:hint="dd/MM/yyyy"
                                 android:gravity="center_vertical"
                                 android:layout_marginTop="4dp"
                                 android:background="@drawable/border_bg" />
@@ -141,6 +144,40 @@
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
 
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="नये स्वामी का नाम (हिंदी में)"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <EditText     android:padding="4dp"
+                        android:id="@+id/et_NewOwnerName"
+                        android:layout_width="match_parent"
+                        android:inputType="textPersonName"
+
+                        android:layout_height="45dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/border_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="नये स्वामी के पिता/पति का नाम"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <EditText     android:padding="4dp"
+                        android:id="@+id/et_NewOwnerFatherName"
+                        android:layout_width="match_parent"
+                        android:inputType="textPersonName"
+
+                        android:layout_height="45dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/border_bg" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -169,6 +206,22 @@
 
                 <EditText
                     android:id="@+id/et_propertyNumber"
+                                        android:padding="4dp"
+                        android:layout_width="match_parent"
+                    android:inputType="number"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/border_bg" />
+ <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="पुरानी संपत्ति संख्या"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_oldPropertyNumber"
                                         android:padding="4dp"
                         android:layout_width="match_parent"
                     android:inputType="number"
@@ -242,12 +295,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="संपत्ति की श्रेणी"
+                        android:text="संपत्ति प्रकार"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spin_categoryOfPrperty"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/border_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="संपत्ति उप प्रकार"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spin_SubCategoryOfPrperty"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
@@ -697,6 +765,22 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
+ <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="House Number"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_HouseNumber"
+                        android:inputType="number"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/border_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -780,6 +864,35 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="मूल्यांकन तिथि"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                        <EditText
+                            android:id="@+id/ev_AssesmentDate"
+                            android:drawableEnd="@drawable/calendar"
+                            android:paddingEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:maxLength="10"
+                            android:paddingStart="4dp"
+                            android:textSize="15dp"
+                            android:inputType="datetime"
+                            android:hint="dd/MM/yyyy"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/border_bg" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
