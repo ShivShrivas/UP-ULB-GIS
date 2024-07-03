@@ -23,7 +23,7 @@ public class CustomProgress {
         return customProgress;
     }
 
-    public static void showProgress(Context context, String message, boolean cancelable) {
+    public  void showProgress(Context context, String message, boolean cancelable) {
         mDialog = new Dialog(context);
         // no title for the dialog
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -40,7 +40,7 @@ public class CustomProgress {
         mDialog.show();
     }
 
-    public static void hideProgress() {
+    public  void hideProgress() {
         if (mDialog != null) {
             mDialog.dismiss();
             mDialog = null;

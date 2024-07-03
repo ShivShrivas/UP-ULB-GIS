@@ -41,6 +41,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
         customProgress = CustomProgress.getInstance();
        // spinnerImage = findViewById(R.id.spinner_imagetype);
         etUserName = findViewById(R.id.etUserName);
@@ -70,6 +71,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void getLoginResult() {
+
         customProgress.showProgress(Login.this,"Logging in...",false);
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -86,6 +88,7 @@ public class Login extends AppCompatActivity {
                     Intent intent=new Intent(Login.this,MasterFormActivity.class);
                     intent.putExtra("OfficeId",response.body().getOfficeId().toString());
                     intent.putExtra("UserId",response.body().getUserId().toString());
+                    intent.putExtra("propertyId","");
 
 
                     startActivity(intent);

@@ -7,25 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".MasterFormActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_200"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Master Form"
-        app:titleTextColor="@color/white" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -58,14 +48,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_OwnerName"
                         android:layout_width="match_parent"
-                        android:inputType="textPersonName"
-
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+
+                        android:background="@drawable/border_bg"
+                        android:inputType="textPersonName"
+                        android:padding="4dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -113,18 +104,18 @@
 
                             <EditText
                                 android:id="@+id/et_dob"
-                                android:drawableEnd="@drawable/calendar"
-                                android:paddingEnd="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
-                                android:maxLength="10"
-                                 android:paddingStart="4dp"
-                                android:textSize="15dp"
-                                android:inputType="datetime"
-                                android:hint="dd/MM/yyyy"
-                                android:gravity="center_vertical"
                                 android:layout_marginTop="4dp"
-                                android:background="@drawable/border_bg" />
+                                android:background="@drawable/border_bg"
+                                android:drawableEnd="@drawable/calendar"
+                                android:gravity="center_vertical"
+                                android:hint="dd/MM/yyyy"
+                                android:inputType="datetime"
+                                android:maxLength="10"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="10dp"
+                                android:textSize="15dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -136,13 +127,14 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
-                    android:id="@+id/et_ownerFather"
+                    <EditText
+                        android:id="@+id/et_ownerFather"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="textPersonName"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="textPersonName"
+                        android:padding="4dp" />
 
 
                     <TextView
@@ -151,16 +143,21 @@
                         android:layout_marginTop="8dp"
                         android:text="नये स्वामी का नाम (हिंदी में)"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
-                    <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_NewOwnerName"
+
                         android:layout_width="match_parent"
-                        android:inputType="textPersonName"
 
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="textPersonName"
+                        android:padding="4dp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -168,16 +165,22 @@
                         android:layout_marginTop="8dp"
                         android:text="नये स्वामी के पिता/पति का नाम"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
 
-                    <EditText     android:padding="4dp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <EditText
                         android:id="@+id/et_NewOwnerFatherName"
                         android:layout_width="match_parent"
-                        android:inputType="textPersonName"
-
                         android:layout_height="45dp"
+
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="textPersonName"
+                        android:padding="4dp"
+                        android:visibility="gone" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,15 +189,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_mob"
-                    android:padding="4dp"
+                    <EditText
+                        android:id="@+id/et_mob"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="phone"
-                    android:maxLength="10"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -204,30 +207,34 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_propertyNumber"
-                                        android:padding="4dp"
+                    <EditText
+                        android:id="@+id/et_propertyNumber"
                         android:layout_width="match_parent"
-                    android:inputType="number"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
- <TextView
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="पुरानी संपत्ति संख्या"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
-                <EditText
-                    android:id="@+id/et_oldPropertyNumber"
-                                        android:padding="4dp"
+                    <EditText
+                        android:id="@+id/et_oldPropertyNumber"
                         android:layout_width="match_parent"
-                    android:inputType="number"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="number"
+                        android:padding="4dp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -240,10 +247,10 @@
                     <Spinner
                         android:id="@+id/spin_business"
                         android:layout_width="match_parent"
-                        android:inputType="textPersonName"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="textPersonName" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -253,13 +260,14 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_numberOfamMem"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="number"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -275,6 +283,7 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -295,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="संपत्ति प्रकार"
+                        android:text="संपत्ति की श्रेणी"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
@@ -310,7 +319,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="संपत्ति उप प्रकार"
+                        android:text="संपत्ति की उप श्रेणी"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
@@ -344,13 +353,14 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_areOfProperty"
                         android:layout_width="match_parent"
-                    android:inputType="number"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -360,14 +370,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
-
+                    <EditText
                         android:id="@+id/et_areaOfPlot"
-                    android:inputType="number"
+
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -377,14 +388,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_areaOfCovered"
-                    android:inputType="number"
-
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
+
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -394,14 +406,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_carpetArea"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="number"
-
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -411,14 +424,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_livingArea"
                         android:layout_width="match_parent"
-                    android:inputType="number"
-
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -428,14 +442,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_bussinessArea"
                         android:layout_width="match_parent"
-                    android:inputType="number"
-
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -445,14 +460,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_rentArea"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="number"
-
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -460,14 +476,16 @@
                         android:layout_marginTop="8dp"
                         android:text="Ownership"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <Spinner
                         android:id="@+id/spin_ownership"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -481,10 +499,10 @@
                         android:id="@+id/spin_numberOfBase"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:inputType="number"
-
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+
+                        android:background="@drawable/border_bg"
+                        android:inputType="number" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -524,14 +542,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_nnumberOfRoom"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="number"
-
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -541,14 +560,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_NumberofShop"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="number"
-
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+
+                        android:inputType="number"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -624,7 +644,8 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
-    <TextView
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -677,13 +698,14 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_Comment"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="text"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="text"
+                        android:padding="4dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -698,9 +720,9 @@
                         android:id="@+id/et_others"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:inputType="text"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="text" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -731,9 +753,9 @@
                         android:id="@+id/et_nameOfWard"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:inputType="text"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="text" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -749,38 +771,42 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Gali Number"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/et_galiNumber"
-                        android:inputType="number"
-
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
- <TextView
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:visibility="gone" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="House Number"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/et_HouseNumber"
-                        android:inputType="number"
-
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="number"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -788,15 +814,18 @@
                         android:layout_marginTop="8dp"
                         android:text="Muhalla Name"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
-                <EditText     android:padding="4dp"
+                    <EditText
                         android:id="@+id/et_MuhallaName"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                    android:inputType="text"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:inputType="text"
+                        android:padding="4dp"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -818,12 +847,13 @@
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
-                        <EditText     android:padding="4dp"
+                            <EditText
                                 android:id="@+id/et_logitude"
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
                                 android:layout_marginTop="4dp"
-                                android:background="@drawable/border_bg" />
+                                android:background="@drawable/border_bg"
+                                android:padding="4dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -841,12 +871,13 @@
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
-                        <EditText     android:padding="4dp"
+                            <EditText
                                 android:id="@+id/et_lattitude"
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp"
                                 android:layout_marginTop="4dp"
-                                android:background="@drawable/border_bg" />
+                                android:background="@drawable/border_bg"
+                                android:padding="4dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -856,14 +887,17 @@
                         android:layout_marginTop="8dp"
                         android:text="Religion"
                         android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <Spinner
                         android:id="@+id/spin_religion"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/border_bg" />
+                        android:background="@drawable/border_bg"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -876,21 +910,24 @@
                             android:layout_marginTop="8dp"
                             android:text="मूल्यांकन तिथि"
                             android:textSize="15dp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
                         <EditText
                             android:id="@+id/ev_AssesmentDate"
-                            android:drawableEnd="@drawable/calendar"
-                            android:paddingEnd="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/border_bg"
+                            android:drawableEnd="@drawable/calendar"
+                            android:gravity="center_vertical"
+                            android:hint="dd/MM/yyyy"
+                            android:inputType="datetime"
                             android:maxLength="10"
                             android:paddingStart="4dp"
+                            android:paddingEnd="10dp"
                             android:textSize="15dp"
-                            android:inputType="datetime"
-                            android:hint="dd/MM/yyyy"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/border_bg" />
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -901,7 +938,6 @@
                         android:text="Capture Image"
                         android:textSize="15dp"
                         android:textStyle="bold" />
-
 
 
                     <LinearLayout
@@ -961,5 +997,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_masterlist"
+        android:layout_width="wrap_content"
+       android:backgroundTint="@color/purple_200"
+        android:src="@drawable/list_ic1"
+        android:foregroundTint="@color/purple_200"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

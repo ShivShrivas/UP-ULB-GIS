@@ -4,6 +4,8 @@ package com.uphq.ulb_gis.retrofirClient;
 import com.google.gson.JsonObject;
 import com.uphq.ulb_gis.models.AllSpinnerDataModel;
 import com.uphq.ulb_gis.models.LoginResponse;
+import com.uphq.ulb_gis.models.MasterListResponse;
+import com.uphq.ulb_gis.models.PropertywiseDataModel;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -84,5 +86,18 @@ public interface ApiInterface {
             @Part("DOB") RequestBody DOB
     );
 
+
+
+    @POST("gis/UpdatePropertyData")
+    Call<JsonObject> updateData(
+            @Body JsonObject jsonObject
+    );
+
+    @POST("gis/GisDataList")
+    Call<MasterListResponse> getMasterListData(@Body JsonObject jsonObject);
+
+
+    @POST("gis/PropertyDataList")
+    Call<PropertywiseDataModel> getPropertyListData(@Body JsonObject jsonObject);
 
 }
