@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +24,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.uphq.ulb_gis.adapters.MasterListAdapter;
+import com.uphq.ulb_gis.adapters.MasterSpinnerAdapter;
 import com.uphq.ulb_gis.models.AllSpinnerDataModel;
 import com.uphq.ulb_gis.models.MasterListResponse;
+import com.uphq.ulb_gis.models.SpinnerData;
 import com.uphq.ulb_gis.retrofirClient.ApiClient;
 import com.uphq.ulb_gis.retrofirClient.ApiInterface;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +45,7 @@ public class ProjectMasterList extends AppCompatActivity {
     MasterListAdapter masterListAdapter;
     String oficeId,userid;
     TextView tv_norecord;
+    Spinner spin_wardNo;
     private Toolbar toolbar;
     @Override
     public boolean onSupportNavigateUp() {
@@ -55,10 +64,23 @@ public class ProjectMasterList extends AppCompatActivity {
         if (actionBar != null ) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        spin_wardNo=findViewById(R.id.spin_wardNo);
         oficeId=getIntent().getStringExtra("OfficeId");
         userid=getIntent().getStringExtra("UserId");
-        fetchMasterListdata();
+        getSpinnerData(16,spin_wardNo,"WardNumbers");
+        spin_wardNo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SpinnerData spinnerData=(SpinnerData)adapterView.getSelectedItem();
+                fetchMasterListdata(spinnerData.getMasterId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         recView_MasterProjectList=findViewById(R.id.recView_MasterProjectList);
         tv_norecord=findViewById(R.id.tv_norecord);
@@ -77,13 +99,13 @@ public class ProjectMasterList extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void fetchMasterListdata() {
+    private void fetchMasterListdata(int wardId) {
         CustomProgress customProgress1=new CustomProgress();
         customProgress1.showProgress(ProjectMasterList.this,"Data Fetching Please Wait...",false);
         JsonObject jsonObject=new JsonObject();
         jsonObject.addProperty("ApiUserName", "GISUSER");
         jsonObject.addProperty("Token", "12345");
-        jsonObject.addProperty("WardId", 1);
+        jsonObject.addProperty("WardId", wardId);
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -99,16 +121,19 @@ public class ProjectMasterList extends AppCompatActivity {
                         masterListAdapter=new MasterListAdapter(ProjectMasterList.this,masterListResponse.getData(),userid,oficeId);
                         recView_MasterProjectList.setAdapter(masterListAdapter);
                         tv_norecord.setVisibility(View.GONE);
-
+                        recView_MasterProjectList.setVisibility(View.VISIBLE);
                         customProgress1.hideProgress();
 
                     }else {
                         tv_norecord.setVisibility(View.VISIBLE);
+                        recView_MasterProjectList.setVisibility(View.GONE);
 
                         customProgress1.hideProgress();
                     }
                 }else {
                     tv_norecord.setVisibility(View.VISIBLE);
+                    recView_MasterProjectList.setVisibility(View.GONE);
+
                     customProgress1.hideProgress();
                 }
             }
@@ -117,8 +142,50 @@ public class ProjectMasterList extends AppCompatActivity {
             public void onFailure(Call<MasterListResponse> call, Throwable t) {
                 customProgress1.hideProgress();
                 tv_norecord.setVisibility(View.VISIBLE);
+                recView_MasterProjectList.setVisibility(View.GONE);
 
             }
         });
     }
+    private void getSpinnerData(int procId, Spinner spinner, String name) {
+
+        JsonObject jsonObject=new JsonObject();
+        jsonObject.addProperty("ApiUserName", "GISUSER");
+        jsonObject.addProperty("Token", "12345");
+        jsonObject.addProperty("Procid", procId);
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
+        Call<AllSpinnerDataModel> call = apiService.getSpinnerMasterData(jsonObject);
+        call.enqueue(new Callback<AllSpinnerDataModel>() {
+            @Override
+            public void onResponse(Call<AllSpinnerDataModel> call, Response<AllSpinnerDataModel> response) {
+
+                if (response.isSuccessful()){
+                    AllSpinnerDataModel allSpinnerDataModel=response.body();
+                    ArrayList<SpinnerData> arrayList=allSpinnerDataModel.getData();
+                    Collections.sort(arrayList, new Comparator<SpinnerData>() {
+                        @Override
+                        public int compare(SpinnerData m1, SpinnerData m2) {
+                            return Integer.compare(m1.getMasterId(), m2.getMasterId());
+                        }
+                    });
+                    spinner.setAdapter(new MasterSpinnerAdapter(ProjectMasterList.this,arrayList));
+
+
+                }else{
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllSpinnerDataModel> call, Throwable t) {
+
+
+            }
+        });
+    }
+
 }

@@ -2,6 +2,7 @@ package com.uphq.ulb_gis;
 
 import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -145,6 +147,18 @@ public class MasterFormActivity extends AppCompatActivity {
         actionBar.setTitle("Master Form");
         actionBar.setBackgroundDrawable(
                 new ColorDrawable(Color.parseColor("#FF7F50")));
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        // Hide the dialog after 3 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 3000); // 3 seconds
          if (actionBar != null && !propertyId_fromList.equals("")) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }else{
@@ -176,8 +190,7 @@ public class MasterFormActivity extends AppCompatActivity {
         et_numberOfamMem = findViewById(R.id.et_numberOfamMem);
         spin_typeOfRoad = findViewById(R.id.spin_typeOfRoad);
         spin_widthOfRoad = findViewById(R.id.spin_widthOfRoad);
-        spin_typeOfRoad = findViewById(R.id.spin_typeOfRoad);
-        spin_categoryOfPrperty = findViewById(R.id.spin_categoryOfPrperty);
+         spin_categoryOfPrperty = findViewById(R.id.spin_categoryOfPrperty);
         spin_SubCategoryOfPrperty = findViewById(R.id.spin_SubCategoryOfPrperty);
         spin_builtyear = findViewById(R.id.spin_builtyear);
         etAreaOfProperty = findViewById(R.id.et_areOfProperty);
@@ -412,10 +425,10 @@ public class MasterFormActivity extends AppCompatActivity {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful() && response.body().get("respCode").getAsInt()==101) {
+                if (response.isSuccessful() && response.body().get("respCode").equals("101")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MasterFormActivity.this);
                     builder.setTitle("Submit Response")
-                            .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode").getAsInt())
+                            .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode"))
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -429,7 +442,7 @@ public class MasterFormActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MasterFormActivity.this);
                     builder.setTitle("Submit Response")
-                            .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode").getAsInt())
+                            .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode"))
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -662,8 +675,6 @@ public class MasterFormActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-
-
             photoPath=image.getAbsolutePath();
             //   Log.d("TAG", "createImageFileBefore work new: "+ImageUtils.getFileSizeInKB(ImageUtils.compressImage(image.getAbsolutePath()).getAbsolutePath()));
 
@@ -776,12 +787,6 @@ public class MasterFormActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
 JsonObject getJsonObject(){
         JsonObject jsonObject=new JsonObject();
     jsonObject.addProperty("ApiUserName", "GISUSER");
@@ -838,9 +843,6 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("SubCastId", ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("ExemptionCategoryId", ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("PropertyUseId", ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
-
-
-
     return jsonObject;
 }
 
@@ -848,122 +850,12 @@ JsonObject getJsonObject(){
   public void submitData(){
         CustomProgress customProgress1=new CustomProgress();
       customProgress1.showProgress(MasterFormActivity.this,"Data Submitting Please Wait...",false);
-//      MediaType MEDIA_TYPE = MediaType.parse("multipart/form-data");
-//      File file = new File(photoPath);
-//      RequestBody requestBody = new MultipartBody.Builder()
-//              .setType(MultipartBody.FORM)
-//              .addFormDataPart("PropertyId", "0")
-//              .addFormDataPart("OfficeId",oficeId)
-//              .addFormDataPart("PropertyNo", "")
-//              .addFormDataPart("OldPropertyNo", "")
-//              .addFormDataPart("AssesmentDate", "")
-//              .addFormDataPart("WardId", ((SpinnerData)spin_wardNo.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("MuhallaId", etMuhallaName.getText().toString())
-//              .addFormDataPart("OwnershipId", ((SpinnerData)spin_ownership.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("FatherName", et_ownerFather.getText().toString())
-//              .addFormDataPart("HindiFatherName", et_ownerFather.getText().toString())
-//              .addFormDataPart("OwnerName", et_OwnerName.getText().toString())
-//              .addFormDataPart("HindiOwnerName", et_OwnerName.getText().toString())
-//              .addFormDataPart("NewOwnerName", et_OwnerName.getText().toString())
-//              .addFormDataPart("NewOwnerFatherName", et_ownerFather.getText().toString())
-//              .addFormDataPart("HouseNo", et_propertyNumber.getText().toString())
-//              .addFormDataPart("Address", "")
-//              .addFormDataPart("MobileNo", et_mob.getText().toString())
-//              .addFormDataPart("RentAreaSqr", etRentArea.getText().toString())
-//              .addFormDataPart("TotalArea", etAreaOfPlot.getText().toString())
-//              .addFormDataPart("AreaRateId", etCarpetArea.getText().toString())
-//              .addFormDataPart("RoadWidthId", ((SpinnerData)spin_widthOfRoad.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("ConstructionYear", ((SpinnerData)spin_builtyear.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("TotalOwnArea", etAreaOfCovered.getText().toString())
-//              .addFormDataPart("TypeId", ((SpinnerData)spin_categoryOfPrperty.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("Floor", ((SpinnerData)spin_numberOfBase.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("NoofRoom", etNumberOfRoom.getText().toString())
-//              .addFormDataPart("NoofShop", etNumberOfShop.getText().toString())
-//              .addFormDataPart("RoadFit", ((SpinnerData)spin_typeOfRoad.getSelectedItem()).getMasterName())
-//              .addFormDataPart("Remark", etComment.getText().toString())
-//              .addFormDataPart("IsWConnection", ((SpinnerData)spin_itWaterConnection.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("GridNo", ((SpinnerData)spin_gridNumber.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("GaliNo", et_galiNumber.getText().toString())
-//              .addFormDataPart("IsTaxPay", ((SpinnerData)spin_isTaxPaying.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("RashanCardTypeId",((SpinnerData)spin_rationcard.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("NoofMember", et_numberOfamMem.getText().toString())
-//              .addFormDataPart("RelegionId",((SpinnerData)spin_religion.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("CasteId", ((SpinnerData)spin_casteCategory.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("RegistrationTypeId", ((SpinnerData)spin_registratioType.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("RaodTypeId",((SpinnerData)spin_typeOfRoad.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("UID", userid)
-//              .addFormDataPart("AssessedTax", ((SpinnerData)spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("ModifiedTax", "")
-//              .addFormDataPart("Toilet", ((SpinnerData)spin_isToilet.getSelectedItem()).getMasterId().toString())
-//              .addFormDataPart("RUID", "")
-//              .addFormDataPart("PhotoPath", file.getName(), RequestBody.create(MEDIA_TYPE, file))
-//              .addFormDataPart("Latitute", lattitude)
-//              .addFormDataPart("Longitute", longitude)
-//              .addFormDataPart("DeviceId", "")
-//              .addFormDataPart("ProcId", "1")
-//              .addFormDataPart("GovtSchemeId", ((SpinnerData)spin_PMHouseScheme.getSelectedItem()).getMasterId().toString())
-//              .build();
-
-//      ApiInterface apiService =
-//              ApiClient.getClient().create(ApiInterface.class);
-//      //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
-//      Call<JsonObject> call = apiService.insertData(requestBody);
 
       File file = new File(photoPath);
       RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
 
       // MultipartBody.Part is used to send also the actual file name
       MultipartBody.Part body = MultipartBody.Part.createFormData("PhotoPath", file.getName(), requestFile);
-// Log all data
-      Log.d("RequestBody", "PropertyId: " + "0");
-      Log.d("RequestBody", "OfficeId: " + oficeId);
-      Log.d("RequestBody", "PropertyNo: ");
-      Log.d("RequestBody", "OldPropertyNo: ");
-      Log.d("RequestBody", "AssesmentDate: ");
-      Log.d("RequestBody", "WardId: " + ((SpinnerData) spin_wardNo.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "MuhallaId: " + etMuhallaName.getText().toString());
-      Log.d("RequestBody", "OwnershipId: " + ((SpinnerData) spin_ownership.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "FatherName: " + et_ownerFather.getText().toString());
-      Log.d("RequestBody", "HindiFatherName: " + et_ownerFather.getText().toString());
-      Log.d("RequestBody", "OwnerName: " + et_OwnerName.getText().toString());
-      Log.d("RequestBody", "HindiOwnerName: " + et_OwnerName.getText().toString());
-      Log.d("RequestBody", "NewOwnerName: " + et_NewOwnerName.getText().toString());
-      Log.d("RequestBody", "NewOwnerFatherName: " + et_NewOwnerFatherName.getText().toString());
-      Log.d("RequestBody", "HouseNo: " + et_propertyNumber.getText().toString());
-      Log.d("RequestBody", "Address: ");
-      Log.d("RequestBody", "MobileNo: " + et_mob.getText().toString());
-      Log.d("RequestBody", "RentAreaSqr: " + etRentArea.getText().toString());
-      Log.d("RequestBody", "TotalArea: " + etAreaOfPlot.getText().toString());
-      Log.d("RequestBody", "AreaRateId: " + etCarpetArea.getText().toString());
-      Log.d("RequestBody", "RoadWidthId: " + ((SpinnerData) spin_widthOfRoad.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "ConstructionYear: " + ((SpinnerData) spin_builtyear.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "TotalOwnArea: " + etAreaOfCovered.getText().toString());
-      Log.d("RequestBody", "TypeId: " + ((SpinnerData) spin_categoryOfPrperty.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "Floor: " + ((SpinnerData) spin_numberOfBase.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "NoofRoom: " + etNumberOfRoom.getText().toString());
-      Log.d("RequestBody", "NoofShop: " + etNumberOfShop.getText().toString());
-      Log.d("RequestBody", "RoadFit: " + ((SpinnerData) spin_typeOfRoad.getSelectedItem()).getMasterName());
-      Log.d("RequestBody", "Remark: " + etComment.getText().toString());
-      Log.d("RequestBody", "IsWConnection: " + ((SpinnerData) spin_itWaterConnection.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "GridNo: " + ((SpinnerData) spin_gridNumber.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "GaliNo: " + et_galiNumber.getText().toString());
-      Log.d("RequestBody", "IsTaxPay: " + ((SpinnerData) spin_isTaxPaying.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "RashanCardTypeId: " + ((SpinnerData) spin_rationcard.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "NoofMember: " + et_numberOfamMem.getText().toString());
-      Log.d("RequestBody", "ReligionId: " + ((SpinnerData) spin_religion.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "CasteId: " + ((SpinnerData) spin_casteCategory.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "RegistrationTypeId: " + ((SpinnerData) spin_registratioType.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "RoadTypeId: " + ((SpinnerData) spin_typeOfRoad.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "UID: " + "");
-      Log.d("RequestBody", "AssessedTax: " + ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "ModifiedTax: ");
-      Log.d("RequestBody", "Toilet: " + ((SpinnerData) spin_isToilet.getSelectedItem()).getMasterId().toString());
-      Log.d("RequestBody", "RUID: ");
-      Log.d("RequestBody", "Latitude: " + lattitude);
-      Log.d("RequestBody", "Longitude: " + longitude);
-      Log.d("RequestBody", "DeviceId: ");
-      Log.d("RequestBody", "ProcId: " + "1");
-      Log.d("RequestBody", "GovtSchemeId: " + ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
 
       // Add other parameters
       RequestBody officeIdPart = RequestBody.create(MultipartBody.FORM, oficeId);
@@ -1020,14 +912,10 @@ JsonObject getJsonObject(){
       RequestBody SubCastId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
       RequestBody PropertySubType = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
 
-      ApiInterface apiService =
-              ApiClient.getClient().create(ApiInterface.class);
-      //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
-      Call<JsonObject> call;
+      ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+      RequestBody propertyId = RequestBody.create(MultipartBody.FORM, "0");
 
-          RequestBody propertyId = RequestBody.create(MultipartBody.FORM, "0");
-
-          call = apiService.insertData(
+      Call<JsonObject> call = apiService.insertData(
             body,
             propertyId, officeIdPart, propertyNo, oldPropertyNo, assessmentDate, wardId, muhallaId,
             ownershipId, fatherName, hindiFatherName, ownerName, hindiOwnerName, newOwnerName,
@@ -1037,13 +925,10 @@ JsonObject getJsonObject(){
             religionId, casteId, registrationTypeId, roadTypeId, uid, assessedTax, modifiedTax,
             toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB
     );
-
-
-
       call.enqueue(new Callback<JsonObject>() {
           @Override
           public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-              if (response.isSuccessful() && response.body().get("respCode").getAsInt()==101) {
+              if (response.isSuccessful() && response.body().get("respCode").equals("101")) {
                   AlertDialog.Builder builder = new AlertDialog.Builder(MasterFormActivity.this);
                   builder.setTitle("Submit Response")
                           .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode").getAsInt())
@@ -1060,7 +945,7 @@ JsonObject getJsonObject(){
 
                   AlertDialog.Builder builder = new AlertDialog.Builder(MasterFormActivity.this);
                   builder.setTitle("Submit Response")
-                          .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode").getAsInt())
+                          .setMessage("("+response.body().get("respMessage").getAsString()+") "+response.body().get("respCode").getAsString())
                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                               @Override
                               public void onClick(DialogInterface dialog, int which) {
@@ -1094,8 +979,6 @@ JsonObject getJsonObject(){
           }
       });
   }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
        super.onActivityResult(requestCode, resultCode, data);
