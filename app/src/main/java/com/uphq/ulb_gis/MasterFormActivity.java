@@ -131,6 +131,7 @@ public class MasterFormActivity extends AppCompatActivity {
     FloatingActionButton fb_masterlist;
     String oficeId,userid,propertyId_fromList;
 
+    LinearLayout ll_location,ll_imageCpture;
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -201,6 +202,8 @@ public class MasterFormActivity extends AppCompatActivity {
         etBusinessArea = findViewById(R.id.et_bussinessArea);
         etRentArea = findViewById(R.id.et_rentArea);
         fb_masterlist = findViewById(R.id.fb_masterlist);
+        ll_location = findViewById(R.id.ll_location);
+        ll_imageCpture = findViewById(R.id.ll_imageCpture);
 
         spin_ownership = findViewById(R.id.spin_ownership);
         spin_numberOfBase = findViewById(R.id.spin_numberOfBase);
@@ -225,6 +228,11 @@ public class MasterFormActivity extends AppCompatActivity {
         etLongitude = findViewById(R.id.et_logitude);
         etLatitude = findViewById(R.id.et_lattitude);
         spin_religion = findViewById(R.id.spin_religion);
+        if (!propertyId_fromList.equals("")){
+            ll_location.setVisibility(View.GONE);
+            ll_imageCpture.setVisibility(View.GONE);
+            fb_masterlist.setVisibility(View.GONE);
+        }
 
         customProgress=new CustomProgress();
         customProgress.showProgress(MasterFormActivity.this,"Data Fetcing...\nPlease wait...",false);
@@ -390,17 +398,18 @@ public class MasterFormActivity extends AppCompatActivity {
 
 
                 {
-                    if (photoPath.isEmpty() && photoPath.length()<=1){
-                        Toast.makeText(MasterFormActivity.this, "Please capture image...", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if (propertyId_fromList.equals("")){
 
-                            submitData();
+                        if (propertyId_fromList.equals("")){
+                            if (photoPath.isEmpty() && photoPath.length()<=1){
+                                Toast.makeText(MasterFormActivity.this, "Please capture image...", Toast.LENGTH_SHORT).show();
+                            }else {
+                                submitData();
+                            }
                         }else {
                             updateData();
 
                         }
-                    }
+
                     // All fields are valid, proceed with submission
                     //submitForm();
 
@@ -434,6 +443,7 @@ public class MasterFormActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     dialog.dismiss();
+                                    finish();
                                 }
                             })
                             .setCancelable(false) // Prevent dismissing dialog by clicking outside or pressing back button
@@ -448,6 +458,7 @@ public class MasterFormActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     dialog.dismiss();
+                                    finish();
                                 }
                             })
                             .setCancelable(false) // Prevent dismissing dialog by clicking outside or pressing back button
@@ -843,6 +854,8 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("SubCastId", ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("ExemptionCategoryId", ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("PropertyUseId", ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
+    jsonObject.addProperty("CommercialArrear", etBusinessArea.getText().toString());
+    jsonObject.addProperty("ResidentialArrear", etLivingArea.getText().toString());
     return jsonObject;
 }
 
@@ -911,6 +924,8 @@ JsonObject getJsonObject(){
       RequestBody propertyUseId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
       RequestBody SubCastId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
       RequestBody PropertySubType = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
+      RequestBody ResidentialArrear = RequestBody.create(MultipartBody.FORM,  etLivingArea.getText().toString());
+      RequestBody CommercialArrear = RequestBody.create(MultipartBody.FORM,  etBusinessArea.getText().toString());
 
       ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
       RequestBody propertyId = RequestBody.create(MultipartBody.FORM, "0");
@@ -923,7 +938,7 @@ JsonObject getJsonObject(){
             roadWidthId, constructionYear, totalOwnArea, typeId, floor, noofRoom, noofShop,
             roadFit, remark, isWConnection, gridNo, galiNo, isTaxPay, rashanCardTypeId, noofMember,
             religionId, casteId, registrationTypeId, roadTypeId, uid, assessedTax, modifiedTax,
-            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB
+            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB,ResidentialArrear,CommercialArrear
     );
       call.enqueue(new Callback<JsonObject>() {
           @Override

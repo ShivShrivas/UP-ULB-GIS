@@ -83,7 +83,9 @@ public interface ApiInterface {
             @Part("PropertyUseId") RequestBody PropertyUseId,
             @Part("SubCastId") RequestBody SubCastId,
             @Part("PropertySubType") RequestBody PropertySubType,
-            @Part("DOB") RequestBody DOB
+            @Part("DOB") RequestBody DOB,
+            @Part("ResidentialArrear") RequestBody ResidentialArrear,
+            @Part("CommercialArrear") RequestBody CommercialArrear
     );
 
 

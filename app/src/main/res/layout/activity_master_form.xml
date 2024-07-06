@@ -508,7 +508,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="कर छूट की श्रेणी"
+                        android:text="भवन का प्रकार"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
@@ -523,7 +523,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="संपत्ति का उपयोग"
+                        android:text="मोहल्ले का नाम"
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
@@ -721,6 +721,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="4dp"
+                        android:padding="4dp"
                         android:background="@drawable/border_bg"
                         android:inputType="text" />
 
@@ -753,6 +754,7 @@
                         android:id="@+id/et_nameOfWard"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
+                        android:padding="4dp"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_bg"
                         android:inputType="text" />
@@ -828,6 +830,7 @@
                         android:visibility="gone" />
 
                     <LinearLayout
+                        android:id="@+id/ll_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -931,57 +934,64 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Capture Image"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-
                     <LinearLayout
+                        android:id="@+id/ll_imageCpture"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Capture Image"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
 
                         <LinearLayout
-                            android:id="@+id/llBeforeWorkImage"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/border_bg"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/tvBefWorkImg"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_horizontal"
+                            <LinearLayout
+                                android:id="@+id/llBeforeWorkImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_bg"
                                 android:gravity="center"
-                                android:text="Capture Image"
-                                android:textColor="@color/purple_200"
-                                android:textStyle="bold" />
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tvBefWorkImg"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal"
+                                    android:gravity="center"
+                                    android:text="Capture Image"
+                                    android:textColor="@color/purple_200"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:drawable/ic_menu_camera"
+                                    android:backgroundTint="@color/purple_200" />
+
+                            </LinearLayout>
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:drawable/ic_menu_camera"
-                                android:backgroundTint="@color/purple_200" />
+                                android:id="@+id/iv_capturedImage"
+                                android:layout_width="80dp"
+                                android:layout_height="60dp"
 
+                                android:layout_weight="1"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/rounded_login_ui"
+                                android:visibility="gone" />
                         </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/iv_capturedImage"
-                            android:layout_width="80dp"
-                            android:layout_height="60dp"
-
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/rounded_login_ui"
-                            android:visibility="gone" />
                     </LinearLayout>
+
 
                     <Button
                         android:id="@+id/btn_submit"
