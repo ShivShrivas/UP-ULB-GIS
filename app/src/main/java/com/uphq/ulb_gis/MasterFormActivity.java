@@ -35,6 +35,7 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.uphq.ulb_gis.Utils.CompressLib.Compressor;
 import com.uphq.ulb_gis.Utils.DateTextWatcher;
 import com.uphq.ulb_gis.Utils.GpsTracker;
 import com.uphq.ulb_gis.Utils.ImageDialogFragment;
@@ -495,7 +496,7 @@ public class MasterFormActivity extends AppCompatActivity {
         jsonObject.addProperty("ApiUserName", "GISUSER");
         jsonObject.addProperty("Token", "12345");
         jsonObject.addProperty("PropertyId", propertyId_fromList);
-
+        Log.d("TAG", "fetchDataFromServer: "+jsonObject);
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
         //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
@@ -852,6 +853,7 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("ProcId", "1");
     jsonObject.addProperty("GovtSchemeId", ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("SubCastId", ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
+    jsonObject.addProperty("GenderId ", ((SpinnerData) spin_Gender.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("ExemptionCategoryId", ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("PropertyUseId", ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("CommercialArrear", etBusinessArea.getText().toString());
@@ -865,10 +867,19 @@ JsonObject getJsonObject(){
       customProgress1.showProgress(MasterFormActivity.this,"Data Submitting Please Wait...",false);
 
       File file = new File(photoPath);
-      RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+      File tempCroppedImage = new Compressor.Builder(MasterFormActivity.this)
+              .setMaxWidth(720)
+              .setMaxHeight(720)
+              .setQuality(75)
+              .setCompressFormat(Bitmap.CompressFormat.JPEG)
+              .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                      Environment.DIRECTORY_PICTURES).getAbsolutePath())
+              .build()
+              .compressToFile(file);
+      RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), tempCroppedImage);
 
       // MultipartBody.Part is used to send also the actual file name
-      MultipartBody.Part body = MultipartBody.Part.createFormData("PhotoPath", file.getName(), requestFile);
+      MultipartBody.Part body = MultipartBody.Part.createFormData("PhotoPath", tempCroppedImage.getName(), requestFile);
 
       // Add other parameters
       RequestBody officeIdPart = RequestBody.create(MultipartBody.FORM, oficeId);
@@ -923,6 +934,7 @@ JsonObject getJsonObject(){
       RequestBody govtSchemeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
       RequestBody propertyUseId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
       RequestBody SubCastId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
+      RequestBody GenderId  = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_Gender.getSelectedItem()).getMasterId().toString());
       RequestBody PropertySubType = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
       RequestBody ResidentialArrear = RequestBody.create(MultipartBody.FORM,  etLivingArea.getText().toString());
       RequestBody CommercialArrear = RequestBody.create(MultipartBody.FORM,  etBusinessArea.getText().toString());
@@ -938,8 +950,8 @@ JsonObject getJsonObject(){
             roadWidthId, constructionYear, totalOwnArea, typeId, floor, noofRoom, noofShop,
             roadFit, remark, isWConnection, gridNo, galiNo, isTaxPay, rashanCardTypeId, noofMember,
             religionId, casteId, registrationTypeId, roadTypeId, uid, assessedTax, modifiedTax,
-            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB,ResidentialArrear,CommercialArrear
-    );
+            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB,ResidentialArrear,CommercialArrear,GenderId
+      );
       call.enqueue(new Callback<JsonObject>() {
           @Override
           public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

@@ -85,7 +85,8 @@ public interface ApiInterface {
             @Part("PropertySubType") RequestBody PropertySubType,
             @Part("DOB") RequestBody DOB,
             @Part("ResidentialArrear") RequestBody ResidentialArrear,
-            @Part("CommercialArrear") RequestBody CommercialArrear
+            @Part("CommercialArrear") RequestBody CommercialArrear,
+            @Part("GenderId ") RequestBody GenderId
     );
 
 
