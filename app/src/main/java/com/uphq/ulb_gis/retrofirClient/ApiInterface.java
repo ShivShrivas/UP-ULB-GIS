@@ -86,7 +86,11 @@ public interface ApiInterface {
             @Part("DOB") RequestBody DOB,
             @Part("ResidentialArrear") RequestBody ResidentialArrear,
             @Part("CommercialArrear") RequestBody CommercialArrear,
-            @Part("GenderId ") RequestBody GenderId
+            @Part("GenderId") RequestBody GenderId,
+            @Part("OccupationId") RequestBody OccupationId,
+            @Part("TotalPropertyArea") RequestBody TotalPropertyArea,
+            @Part("OtherRemark") RequestBody OtherRemark,
+            @Part("WardName") RequestBody WardName
     );
 
 

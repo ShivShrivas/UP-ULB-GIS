@@ -853,11 +853,15 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("ProcId", "1");
     jsonObject.addProperty("GovtSchemeId", ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("SubCastId", ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
-    jsonObject.addProperty("GenderId ", ((SpinnerData) spin_Gender.getSelectedItem()).getMasterId().toString());
+    jsonObject.addProperty("GenderId", ((SpinnerData) spin_Gender.getSelectedItem()).getMasterId().toString());
+    jsonObject.addProperty("OccupationId", ((SpinnerData) spin_business.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("ExemptionCategoryId", ((SpinnerData) spin_ctegoryOftaxRelaxation.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("PropertyUseId", ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("CommercialArrear", etBusinessArea.getText().toString());
     jsonObject.addProperty("ResidentialArrear", etLivingArea.getText().toString());
+    jsonObject.addProperty("TotalPropertyArea", etAreaOfProperty.getText().toString());
+    jsonObject.addProperty("OtherRemark", et_others.getText().toString());
+    jsonObject.addProperty("WardName", et_nameOfWard.getText().toString());
     return jsonObject;
 }
 
@@ -933,11 +937,15 @@ JsonObject getJsonObject(){
       RequestBody procId = RequestBody.create(MultipartBody.FORM, "1");
       RequestBody govtSchemeId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_PMHouseScheme.getSelectedItem()).getMasterId().toString());
       RequestBody propertyUseId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
+      RequestBody OccupationId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_business.getSelectedItem()).getMasterId().toString());
       RequestBody SubCastId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_subCaste.getSelectedItem()).getMasterId().toString());
       RequestBody GenderId  = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_Gender.getSelectedItem()).getMasterId().toString());
       RequestBody PropertySubType = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
       RequestBody ResidentialArrear = RequestBody.create(MultipartBody.FORM,  etLivingArea.getText().toString());
       RequestBody CommercialArrear = RequestBody.create(MultipartBody.FORM,  etBusinessArea.getText().toString());
+      RequestBody TotalPropertyArea = RequestBody.create(MultipartBody.FORM,  etAreaOfProperty.getText().toString());
+      RequestBody OtherRemark = RequestBody.create(MultipartBody.FORM,  et_others.getText().toString());
+      RequestBody WardName = RequestBody.create(MultipartBody.FORM,  et_nameOfWard.getText().toString());
 
       ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
       RequestBody propertyId = RequestBody.create(MultipartBody.FORM, "0");
@@ -950,7 +958,8 @@ JsonObject getJsonObject(){
             roadWidthId, constructionYear, totalOwnArea, typeId, floor, noofRoom, noofShop,
             roadFit, remark, isWConnection, gridNo, galiNo, isTaxPay, rashanCardTypeId, noofMember,
             religionId, casteId, registrationTypeId, roadTypeId, uid, assessedTax, modifiedTax,
-            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId,PropertySubType,DOB,ResidentialArrear,CommercialArrear,GenderId
+            toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId
+              ,PropertySubType,DOB,ResidentialArrear,CommercialArrear,GenderId,OccupationId,TotalPropertyArea,OtherRemark,WardName
       );
       call.enqueue(new Callback<JsonObject>() {
           @Override
