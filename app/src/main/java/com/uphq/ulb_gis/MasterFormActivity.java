@@ -538,17 +538,23 @@ public class MasterFormActivity extends AppCompatActivity {
 
         //et_nameOfWard.setText(propertywiseDataModel.getWardId());
         etMuhallaName.setText(String.valueOf(propertywiseDataModel.getMuhallaId()));
-        etRentArea.setText(String.valueOf(propertywiseDataModel.getRentAreaSqr()));
+
         etAreaOfPlot.setText(String.valueOf(propertywiseDataModel.getTotalArea()));
         etCarpetArea.setText(String.valueOf(propertywiseDataModel.getAreaRateId()));
         etAreaOfCovered.setText(String.valueOf(propertywiseDataModel.getTotalOwnArea()));
         etNumberOfRoom.setText(String.valueOf(propertywiseDataModel.getNoofRoom()));
         etNumberOfShop.setText(String.valueOf(propertywiseDataModel.getNoofShop()));
-        etAreaOfProperty.setText(String.valueOf(propertywiseDataModel.getTotalOwnArea()));
-        et_galiNumber.setText(String.valueOf(propertywiseDataModel.getGaliNo()));
+         et_galiNumber.setText(String.valueOf(propertywiseDataModel.getGaliNo()));
         et_HouseNumber.setText(String.valueOf(propertywiseDataModel.getHouseNo()));
         etComment.setText(propertywiseDataModel.getRemark());
         et_galiNumber.setText(String.valueOf(propertywiseDataModel.getGaliNo()));
+        et_dob.setText(String.valueOf(propertywiseDataModel.getDob()));
+        et_propertyNumber.setText(propertywiseDataModel.getPropertyNo());
+        etAreaOfProperty.setText(String.valueOf(propertywiseDataModel.getTotalPropertyArea()));
+        etRentArea.setText(String.valueOf(propertywiseDataModel.getRentAreaSqr()));
+        etBusinessArea.setText(String.valueOf(propertywiseDataModel.getCommercialArrear()));
+        etLivingArea.setText(String.valueOf(propertywiseDataModel.getResidentialArrear()));
+
 
        // et_others.setText(propertywiseDataModel.get());
 
@@ -566,6 +572,14 @@ public class MasterFormActivity extends AppCompatActivity {
         setSpinnerSelection(spin_isToilet,propertywiseDataModel.getToilet());
         setSpinnerSelection(spin_PMHouseScheme,propertywiseDataModel.getGovtSchemeId());
         setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
+        setSpinnerSelection(spin_categoryOfPrperty,propertywiseDataModel.getTypeId());
+        setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
+        setSpinnerSelection(spin_numberOfBase,propertywiseDataModel.getFloor());
+        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
+        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
+        setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
+        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
+        setSpinnerSelection(spin_Gender,propertywiseDataModel.getGenderId());
 
         customProgress1.hideProgress();
         //spin_Gender.setSelection(propertywiseDataModel.getGenderId());

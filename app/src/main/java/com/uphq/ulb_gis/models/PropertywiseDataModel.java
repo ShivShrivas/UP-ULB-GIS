@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class PropertywiseDataModel {
+
     @SerializedName("RespCode")
     @Expose
     private Object respCode;
@@ -139,6 +140,33 @@ public class PropertywiseDataModel {
     @SerializedName("ExemptionCategoryId")
     @Expose
     private Integer exemptionCategoryId;
+    @SerializedName("ResidentialArrear")
+    @Expose
+    private Double residentialArrear;
+    @SerializedName("CommercialArrear")
+    @Expose
+    private Double commercialArrear;
+    @SerializedName("DOB")
+    @Expose
+    private String dob;
+    @SerializedName("GenderId")
+    @Expose
+    private Integer genderId;
+    @SerializedName("PropertySubType")
+    @Expose
+    private Integer propertySubType;
+    @SerializedName("OccupationId")
+    @Expose
+    private Integer occupationId;
+    @SerializedName("OtherRemark")
+    @Expose
+    private String otherRemark;
+    @SerializedName("WardName")
+    @Expose
+    private String wardName;
+    @SerializedName("TotalPropertyArea")
+    @Expose
+    private Double totalPropertyArea;
 
     public Object getRespCode() {
         return respCode;
@@ -499,4 +527,77 @@ public class PropertywiseDataModel {
     public void setExemptionCategoryId(Integer exemptionCategoryId) {
         this.exemptionCategoryId = exemptionCategoryId;
     }
+
+    public Double getResidentialArrear() {
+        return residentialArrear;
+    }
+
+    public void setResidentialArrear(Double residentialArrear) {
+        this.residentialArrear = residentialArrear;
+    }
+
+    public Double getCommercialArrear() {
+        return commercialArrear;
+    }
+
+    public void setCommercialArrear(Double commercialArrear) {
+        this.commercialArrear = commercialArrear;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public Integer getGenderId() {
+        return genderId;
+    }
+
+    public void setGenderId(Integer genderId) {
+        this.genderId = genderId;
+    }
+
+    public Integer getPropertySubType() {
+        return propertySubType;
+    }
+
+    public void setPropertySubType(Integer propertySubType) {
+        this.propertySubType = propertySubType;
+    }
+
+    public Integer getOccupationId() {
+        return occupationId;
+    }
+
+    public void setOccupationId(Integer occupationId) {
+        this.occupationId = occupationId;
+    }
+
+    public String getOtherRemark() {
+        return otherRemark;
+    }
+
+    public void setOtherRemark(String otherRemark) {
+        this.otherRemark = otherRemark;
+    }
+
+    public String getWardName() {
+        return wardName;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
+    public Double getTotalPropertyArea() {
+        return totalPropertyArea;
+    }
+
+    public void setTotalPropertyArea(Double totalPropertyArea) {
+        this.totalPropertyArea = totalPropertyArea;
+    }
+
 }
