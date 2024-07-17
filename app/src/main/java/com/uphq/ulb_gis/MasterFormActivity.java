@@ -554,11 +554,12 @@ public class MasterFormActivity extends AppCompatActivity {
         etRentArea.setText(String.valueOf(propertywiseDataModel.getRentAreaSqr()));
         etBusinessArea.setText(String.valueOf(propertywiseDataModel.getCommercialArrear()));
         etLivingArea.setText(String.valueOf(propertywiseDataModel.getResidentialArrear()));
+        et_others.setText(String.valueOf(propertywiseDataModel.getOtherRemark()));
 
 
        // et_others.setText(propertywiseDataModel.get());
 
-        et_nameOfWard.setText(String.valueOf(propertywiseDataModel.getWardId()));
+        et_nameOfWard.setText(String.valueOf(propertywiseDataModel.getWardName()));
 
         setSpinnerSelection(spin_typeOfRoad,propertywiseDataModel.getRaodTypeId());
         setSpinnerSelection(spin_wardNo,propertywiseDataModel.getWardId());
@@ -566,20 +567,22 @@ public class MasterFormActivity extends AppCompatActivity {
         setSpinnerSelection(spin_builtyear,propertywiseDataModel.getConstructionYear());
         setSpinnerSelection(spin_rationcard,propertywiseDataModel.getRashanCardTypeId());
         setSpinnerSelection(spin_registratioType,propertywiseDataModel.getRegistrationTypeId());
-        setSpinnerSelection(spin_casteCategory,propertywiseDataModel.getCasteId());
+        setSpinnerSelectionwithSubType(spin_casteCategory,propertywiseDataModel.getCasteId(),spin_subCaste,propertywiseDataModel.getSubCastId());
         setSpinnerSelection(spin_itWaterConnection,propertywiseDataModel.getIsWConnection());
         setSpinnerSelection(spin_isTaxPaying,propertywiseDataModel.getIsTaxPay());
         setSpinnerSelection(spin_isToilet,propertywiseDataModel.getToilet());
         setSpinnerSelection(spin_PMHouseScheme,propertywiseDataModel.getGovtSchemeId());
-        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
-        setSpinnerSelection(spin_categoryOfPrperty,propertywiseDataModel.getTypeId());
-        setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
+        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGridNo());
+        setSpinnerSelectionwithSubType(spin_categoryOfPrperty,propertywiseDataModel.getTypeId(),spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
+     //   setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
         setSpinnerSelection(spin_numberOfBase,propertywiseDataModel.getFloor());
-        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
-        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
-        setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
-        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
+
+      //  setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
+      //  setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
         setSpinnerSelection(spin_Gender,propertywiseDataModel.getGenderId());
+        setSpinnerSelection(spin_ctegoryOftaxRelaxation,propertywiseDataModel.getExemptionCategoryId());
+        setSpinnerSelection(spin_business,propertywiseDataModel.getOccupationId());
+        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getPropertyUseId());
 
         customProgress1.hideProgress();
         //spin_Gender.setSelection(propertywiseDataModel.getGenderId());
@@ -592,6 +595,22 @@ public class MasterFormActivity extends AppCompatActivity {
         int position = findPositionInSpinner(spinner, itemToFind);
         if (position >= 0) {
             spinner.setSelection(position);
+        } else {
+            Toast.makeText(this, "Item '" + itemToFind + "' not found in Spinner", Toast.LENGTH_SHORT).show();
+        }
+    }
+  private void setSpinnerSelectionwithSubType(Spinner spinner, int itemToFind,Spinner subSpinner, int subItemToFind) {
+        int position = findPositionInSpinner(spinner, itemToFind);
+        if (position >= 0) {
+            spinner.setSelection(position);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    int subPosition = findPositionInSpinner(subSpinner, subItemToFind);
+                    subSpinner.setSelection(subPosition);
+                }
+            }, 1000);
+
         } else {
             Toast.makeText(this, "Item '" + itemToFind + "' not found in Spinner", Toast.LENGTH_SHORT).show();
         }
