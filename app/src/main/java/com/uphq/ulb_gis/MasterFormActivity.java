@@ -48,6 +48,7 @@ import com.uphq.ulb_gis.retrofirClient.ApiInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -237,7 +238,7 @@ public class MasterFormActivity extends AppCompatActivity {
 
         customProgress=new CustomProgress();
         customProgress.showProgress(MasterFormActivity.this,"Data Fetcing...\nPlease wait...",false);
-
+        getSpinnerDataById(14,spin_wardNo,"WardNumbers",Integer.parseInt(oficeId));
         getSpinnerData(5,spin_Gender,"Genders");
         getSpinnerData(7,spin_business,"Business");
         getSpinnerData(15,spin_widthOfRoad,"Widths of road");
@@ -247,7 +248,7 @@ public class MasterFormActivity extends AppCompatActivity {
         getSpinnerData(8,spin_ownership,"Ownerships");
         getSpinnerData(20,spin_numberOfBase,"Number Of Bases");
         getSpinnerData(21,spin_ctegoryOftaxRelaxation,"Tax Relaxations");
-        getSpinnerData(22,spin_useOfProperty,"Uses of property");
+
         getSpinnerData(23,spin_isTaxPaying,"Is tax paying");
         getSpinnerData(24,spin_itWaterConnection,"Water Connection");
         getSpinnerData(17,spin_PMHouseScheme,"Prime minister House Scheme");
@@ -255,17 +256,27 @@ public class MasterFormActivity extends AppCompatActivity {
         getSpinnerData(25,spin_rationcard,"Ration card");
         getSpinnerData(3,spin_casteCategory,"Caste category");
         //getSpinnerData(27,spin_subCaste,"Sub-Caste category");
-        getSpinnerData(16,spin_wardNo,"WardNumbers");
+       // getSpinnerData(16,spin_wardNo,"WardNumbers");
         getSpinnerData(13,spin_religion,"Religions");
-        getSpinnerData(28,spin_gridNumber,"Grid Numbers");
+    //    getSpinnerData(28,spin_gridNumber,"Grid Numbers");
         getSpinnerData(11,spin_registratioType,"Registration Type");
+        Log.d("TAG", "onCreate: "+Integer.parseInt(oficeId));
+
+        getSpinnerDataById(15,spin_gridNumber,"Grid Numbers",Integer.parseInt(oficeId));
+
         etLatitude.setText(lattitude);
         etLatitude.setEnabled(false);
         etLongitude.setText(longitude);
         etLongitude.setEnabled(false);
-        customProgress.hideProgress();
+
         if (!propertyId_fromList.equals("")){
-            fetchDataFromServer();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fetchDataFromServer();
+                }
+            },3000);
+
         }
         fb_masterlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,6 +315,18 @@ public class MasterFormActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ImageDialogFragment dialogFragment = ImageDialogFragment.newInstance(photoPath);
                 dialogFragment.show(getSupportFragmentManager(), "ImageDialogFragment");
+            }
+        });
+        spin_wardNo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SpinnerData spinnerData=(SpinnerData) parent.getSelectedItem();
+                getSpinnerDataById(13,spin_useOfProperty,"Uses of property",spinnerData.getMasterId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         spin_casteCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -421,7 +444,7 @@ public class MasterFormActivity extends AppCompatActivity {
                 }
             }
         });
-
+        customProgress.hideProgress();
     }
 
     private void updateData() {
@@ -430,11 +453,12 @@ public class MasterFormActivity extends AppCompatActivity {
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
-        //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
+          Log.d("TAG", "getLoginResult: "+getJsonObject());
         Call<JsonObject> call = apiService.updateData(getJsonObject());
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.d("TAG", "onResponse: "+new Gson().toJson(response.body()));
                 if (response.isSuccessful() && response.body().get("respCode").equals("101")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MasterFormActivity.this);
                     builder.setTitle("Submit Response")
@@ -526,13 +550,18 @@ public class MasterFormActivity extends AppCompatActivity {
     private void setDataoView(PropertywiseDataModel propertywiseDataModel) {
        CustomProgress  customProgress1=new  CustomProgress();
        customProgress1.showProgress(MasterFormActivity.this,"fetching data\nPlease  wait...",false);
+        setSpinnerSelection(spin_wardNo,propertywiseDataModel.getWardId());
         et_OwnerName.setText(propertywiseDataModel.getOwnerName());
         et_ownerFather.setText(propertywiseDataModel.getFatherName());
         //et_dob.setText(propertywiseDataModel.getDob());
         et_AssesmentDate.setText(propertywiseDataModel.getAssesmentDate());
         et_mob.setText(propertywiseDataModel.getMobileNo());
+        if (propertywiseDataModel.getDob()!=null && !propertywiseDataModel.getDob().isEmpty()){
+            et_dob.setText(convertDateFormat(propertywiseDataModel.getDob(),"yyyy-MM-dd","dd/MM/yyyy"));
+        }
 
-        et_propertyNumber.setText(propertywiseDataModel.getPropertyNo());
+
+
         et_oldPropertyNumber.setText(propertywiseDataModel.getOldPropertyNo());
         et_numberOfamMem.setText(String.valueOf(propertywiseDataModel.getNoofMember()));
 
@@ -549,20 +578,21 @@ public class MasterFormActivity extends AppCompatActivity {
         etComment.setText(propertywiseDataModel.getRemark());
         et_galiNumber.setText(String.valueOf(propertywiseDataModel.getGaliNo()));
         et_dob.setText(String.valueOf(propertywiseDataModel.getDob()));
-        et_propertyNumber.setText(propertywiseDataModel.getPropertyNo());
+        et_propertyNumber.setText(propertywiseDataModel.getHouseNo());
         etAreaOfProperty.setText(String.valueOf(propertywiseDataModel.getTotalPropertyArea()));
         etRentArea.setText(String.valueOf(propertywiseDataModel.getRentAreaSqr()));
         etBusinessArea.setText(String.valueOf(propertywiseDataModel.getCommercialArrear()));
         etLivingArea.setText(String.valueOf(propertywiseDataModel.getResidentialArrear()));
-
+        et_others.setText(propertywiseDataModel.getOtherRemark());
 
        // et_others.setText(propertywiseDataModel.get());
 
-        et_nameOfWard.setText(String.valueOf(propertywiseDataModel.getWardId()));
+        et_nameOfWard.setText(String.valueOf(propertywiseDataModel.getWardName()));
 
         setSpinnerSelection(spin_typeOfRoad,propertywiseDataModel.getRaodTypeId());
-        setSpinnerSelection(spin_wardNo,propertywiseDataModel.getWardId());
+
         setSpinnerSelection(spin_widthOfRoad,propertywiseDataModel.getRoadWidthId());
+        setSpinnerSelection(spin_ctegoryOftaxRelaxation,propertywiseDataModel.getRoadWidthId());
         setSpinnerSelection(spin_builtyear,propertywiseDataModel.getConstructionYear());
         setSpinnerSelection(spin_rationcard,propertywiseDataModel.getRashanCardTypeId());
         setSpinnerSelection(spin_registratioType,propertywiseDataModel.getRegistrationTypeId());
@@ -573,17 +603,27 @@ public class MasterFormActivity extends AppCompatActivity {
         setSpinnerSelection(spin_PMHouseScheme,propertywiseDataModel.getGovtSchemeId());
         setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
         setSpinnerSelection(spin_categoryOfPrperty,propertywiseDataModel.getTypeId());
-        setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
         setSpinnerSelection(spin_numberOfBase,propertywiseDataModel.getFloor());
-        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
-        setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
-        setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
-        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGaliNo());
+        setSpinnerSelection(spin_business,propertywiseDataModel.getOccupationId());
+
+       // setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
+
+        setSpinnerSelection(spin_gridNumber,propertywiseDataModel.getGridNo());
         setSpinnerSelection(spin_Gender,propertywiseDataModel.getGenderId());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
+                setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
+                setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
+            }
+        },2000);
+
+
 
         customProgress1.hideProgress();
         //spin_Gender.setSelection(propertywiseDataModel.getGenderId());
-        //spin_business.setSelection(propertywiseDataModel.getBusinessId());
+        //
 
 
 
@@ -787,7 +827,7 @@ public class MasterFormActivity extends AppCompatActivity {
         call.enqueue(new Callback<AllSpinnerDataModel>() {
             @Override
             public void onResponse(Call<AllSpinnerDataModel> call, Response<AllSpinnerDataModel> response) {
-
+         Log.d("TAG", "onResponse: "+new Gson().toJson(response.body()));
                 if (response.isSuccessful()){
                     AllSpinnerDataModel allSpinnerDataModel=response.body();
                     ArrayList<SpinnerData> arrayList=allSpinnerDataModel.getData();
@@ -823,7 +863,7 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("OldPropertyNo", "");
     jsonObject.addProperty("AssesmentDate", "");
     jsonObject.addProperty("WardId", ((SpinnerData) spin_wardNo.getSelectedItem()).getMasterId().toString());
-    jsonObject.addProperty("MuhallaId", etMuhallaName.getText().toString());
+    jsonObject.addProperty("MuhallaId", ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("OwnershipId", ((SpinnerData) spin_ownership.getSelectedItem()).getMasterId().toString());
     jsonObject.addProperty("FatherName", et_ownerFather.getText().toString());
     jsonObject.addProperty("HindiHatherName", et_ownerFather.getText().toString());
@@ -876,6 +916,8 @@ JsonObject getJsonObject(){
     jsonObject.addProperty("TotalPropertyArea", etAreaOfProperty.getText().toString());
     jsonObject.addProperty("OtherRemark", et_others.getText().toString());
     jsonObject.addProperty("WardName", et_nameOfWard.getText().toString());
+    jsonObject.addProperty("PropertySubType",((SpinnerData) spin_SubCategoryOfPrperty.getSelectedItem()).getMasterId().toString());
+    jsonObject.addProperty("DOB",et_dob.getText().toString());
     return jsonObject;
 }
 
@@ -905,7 +947,7 @@ JsonObject getJsonObject(){
       RequestBody oldPropertyNo = RequestBody.create(MultipartBody.FORM, "");//et_oldPropertyNumber.getText().toString());
       RequestBody assessmentDate = RequestBody.create(MultipartBody.FORM,"");// et_AssesmentDate.getText().toString());
       RequestBody wardId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_wardNo.getSelectedItem()).getMasterId().toString());
-      RequestBody muhallaId = RequestBody.create(MultipartBody.FORM, "");//etMuhallaName.getText().toString());
+      RequestBody muhallaId = RequestBody.create(MultipartBody.FORM, ((SpinnerData) spin_useOfProperty.getSelectedItem()).getMasterId().toString());//etMuhallaName.getText().toString());
       RequestBody ownershipId = RequestBody.create(MultipartBody.FORM, "");//((SpinnerData) spin_ownership.getSelectedItem()).getMasterId().toString());
       RequestBody fatherName = RequestBody.create(MultipartBody.FORM, et_ownerFather.getText().toString());
       RequestBody hindiFatherName = RequestBody.create(MultipartBody.FORM, et_ownerFather.getText().toString());
@@ -913,7 +955,7 @@ JsonObject getJsonObject(){
       RequestBody hindiOwnerName = RequestBody.create(MultipartBody.FORM, et_OwnerName.getText().toString());
       RequestBody newOwnerName = RequestBody.create(MultipartBody.FORM, et_OwnerName.getText().toString());
       RequestBody newOwnerFatherName = RequestBody.create(MultipartBody.FORM, et_ownerFather.getText().toString());
-      RequestBody houseNo = RequestBody.create(MultipartBody.FORM, "");//et_HouseNumber.getText().toString());
+      RequestBody houseNo = RequestBody.create(MultipartBody.FORM, et_propertyNumber.getText().toString());//et_HouseNumber.getText().toString());
       RequestBody address = RequestBody.create(MultipartBody.FORM, "");
       RequestBody mobileNo = RequestBody.create(MultipartBody.FORM, et_mob.getText().toString());
       RequestBody rentAreaSqr = RequestBody.create(MultipartBody.FORM, etRentArea.getText().toString());
@@ -975,6 +1017,7 @@ JsonObject getJsonObject(){
             toilet, ruid, latitudePart, longitudePart, deviceId, procId, govtSchemeId,exemptionCategoryId,propertyUseId,SubCastId
               ,PropertySubType,DOB,ResidentialArrear,CommercialArrear,GenderId,OccupationId,TotalPropertyArea,OtherRemark,WardName
       );
+
       call.enqueue(new Callback<JsonObject>() {
           @Override
           public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -1029,6 +1072,19 @@ JsonObject getJsonObject(){
           }
       });
   }
+    public static String convertDateFormat(String dateStr, String initialFormat, String targetFormat) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat(initialFormat);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(targetFormat);
+        try {
+            // Parse the input date
+            Date date = inputFormat.parse(dateStr);
+            // Format the date to the desired format
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
        super.onActivityResult(requestCode, resultCode, data);
