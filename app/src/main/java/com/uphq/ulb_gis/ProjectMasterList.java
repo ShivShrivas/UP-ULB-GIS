@@ -67,7 +67,7 @@ public class ProjectMasterList extends AppCompatActivity {
         spin_wardNo=findViewById(R.id.spin_wardNo);
         oficeId=getIntent().getStringExtra("OfficeId");
         userid=getIntent().getStringExtra("UserId");
-        getSpinnerData(16,spin_wardNo,"WardNumbers");
+        getSpinnerData(14,spin_wardNo,"WardNumbers");
         spin_wardNo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -106,6 +106,7 @@ public class ProjectMasterList extends AppCompatActivity {
         jsonObject.addProperty("ApiUserName", "GISUSER");
         jsonObject.addProperty("Token", "12345");
         jsonObject.addProperty("WardId", wardId);
+        jsonObject.addProperty("OfficeId", oficeId);
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -153,11 +154,12 @@ public class ProjectMasterList extends AppCompatActivity {
         jsonObject.addProperty("ApiUserName", "GISUSER");
         jsonObject.addProperty("Token", "12345");
         jsonObject.addProperty("Procid", procId);
+        jsonObject.addProperty("Id", oficeId);
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
         //  Log.d("TAG", "getLoginResult: "+getLoginJsonObj());
-        Call<AllSpinnerDataModel> call = apiService.getSpinnerMasterData(jsonObject);
+        Call<AllSpinnerDataModel> call = apiService.getSpinnerMasterDataById(jsonObject);
         call.enqueue(new Callback<AllSpinnerDataModel>() {
             @Override
             public void onResponse(Call<AllSpinnerDataModel> call, Response<AllSpinnerDataModel> response) {
