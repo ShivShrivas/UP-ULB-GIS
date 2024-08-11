@@ -97,7 +97,7 @@ public class PropertywiseDataModel {
     private Integer isWConnection;
     @SerializedName("GridNo")
     @Expose
-    private String gridNo;
+    private Integer gridNo;
     @SerializedName("GaliNo")
     @Expose
     private Integer galiNo;
@@ -408,11 +408,11 @@ public class PropertywiseDataModel {
         this.isWConnection = isWConnection;
     }
 
-    public String getGridNo() {
+    public Integer getGridNo() {
         return gridNo;
     }
 
-    public void setGridNo(String gridNo) {
+    public void setGridNo(Integer gridNo) {
         this.gridNo = gridNo;
     }
 
