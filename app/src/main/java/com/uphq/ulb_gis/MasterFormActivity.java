@@ -275,7 +275,7 @@ public class MasterFormActivity extends AppCompatActivity {
                 public void run() {
                     fetchDataFromServer();
                 }
-            },3000);
+            },4000);
 
         }
         fb_masterlist.setOnClickListener(new View.OnClickListener() {
@@ -615,13 +615,14 @@ public class MasterFormActivity extends AppCompatActivity {
             public void run() {
                 setSpinnerSelection(spin_SubCategoryOfPrperty,propertywiseDataModel.getPropertySubType());
                 setSpinnerSelection(spin_subCaste,propertywiseDataModel.getSubCastId());
-                setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getMuhallaId());
+                setSpinnerSelection(spin_useOfProperty,propertywiseDataModel.getPropertyUseId());
+                customProgress1.hideProgress();
             }
         },2000);
 
 
 
-        customProgress1.hideProgress();
+
         //spin_Gender.setSelection(propertywiseDataModel.getGenderId());
         //
 
